@@ -1,0 +1,6 @@
+// Detect unusual login attempts
+SigninLogs
+| where ResultType != "0" 
+| extend GeoLocation = strcat(IPAddress, ", ", Location)
+| summarize Count = count() by UserPrincipalName, GeoLocation
+| where Count > 3
